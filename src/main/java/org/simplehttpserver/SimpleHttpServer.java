@@ -11,7 +11,7 @@ import java.net.InetSocketAddress;
 public class SimpleHttpServer {
 
     private HttpServer httpServer;
-    private int port;
+    public static int port;
 
 
     private void start(int port) {
@@ -19,6 +19,12 @@ public class SimpleHttpServer {
         try {
             httpServer = HttpServer.create(new InetSocketAddress(port), 0);
             System.out.println("server started at port " + port);
+            httpServer.createContext("/echoHeader", new Handlers.EchoHeaderHandler());
+            httpServer.createContext("/echoGet", new Handlers.EchoGetHandler());
+            httpServer.createContext("/echoPost", new Handlers.EchoPostHandler());
+            httpServer.createContext("/register", new Handlers.ResgisterUserHandler());
+            httpServer.createContext("/", new Handlers.RootHandler());
+
             httpServer.setExecutor(null);
             httpServer.start();
         } catch (IOException e) {
